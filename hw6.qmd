@@ -1,0 +1,230 @@
+---
+title: "hw6.qmd"
+format: html
+---
+
+# Homework 6
+## Task 1
+1. What is the purpose of the lapply() function? What is the equivalent purrr function?
+    - lapply applies a function to each element of a list
+    - purrr equivalent function is `map ()`
+2. Suppose we have a list called my_list. Each element of the list is a numeric data frame (all columns
+are numeric). We want use lapply() to run the code cor(numeric_matrix, method = "kendall")
+on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify
+method = "kendall" when calling lapply())
+```{r}
+library(purrr)
+help("matrix")
+numeric_matrix <- list(matrix(rnorm(25), ncol=5), matrix(rnorm(25), ncol=5))
+lapply_example <- lapply(numeric_matrix, FUN = cor,  method = "kendall")
+```
+
+3. What are two advantages of using purrr functions instead of the BaseR apply family?
+    1. automatic handling of data types and type consistency through the map_* functions
+    2. the same inconsistent approach to function arguments and implementations in BaseR. 
+        Conway's Law of Anarchy is the best description. They built a system that matched
+        the communication structure of the organization. 
+4. What is a side-effect function?
+    - A side effect function is a function that represents the underlying data e.g. `print`
+5. Why can you name a variable sd in a function and not cause any issues with the sd function?
+    - Namespace and scoping. Variables inside of functions are scoped to the local
+      function. This means the variable will only exist during the function runtime. Once the function             returns, the `sd` variable will be deallocated from memory. Since the function `sd` is a different           object in a separately scoped namespace (`stats`) than the variable `sd`, R will only look for a more        global scope if no locally scoped `sd` object does not exist. 
+      
+      
+## Task 2 - Writing R Functions
+
+### 1. `getRMSE` (vector of responses,vector of predictions)
+```{r}
+getRMSE <- function (response, predicted){
+  sqrt(mean((response - predicted)^2))
+}
+```
+#### Handle NA as an argument to `getRMSE`
+```{r}
+getRMSE <- function (response, predicted, ...){
+  sqrt(mean((response - predicted)^2, ...))
+}
+```
+### 2. Test Function
+#### Test all numeric values
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+rmse_tst <- getRMSE(resp, pred)
+print(rmse_tst)
+
+```
+
+#### Test NA values present
+```{r}
+rando_index_1 <- sample(length(resp),1)
+rando_index_2 <- sample(length(pred),1)
+resp[rando_index_1] <- NA_real_
+pred[rando_index_2] <- NA_real_
+rmse_tst <- getRMSE(resp, pred, na.rm = TRUE)
+print(rmse_tst)
+```
+#### Test function calls (na.rm = FALSE, na.rm = TRUE)
+```{r}
+# assert na.rm = TRUE returns a number
+rmse_tst <- getRMSE(resp, pred, na.rm = TRUE)
+print(rmse_tst)
+
+# assert na.rm = FALSE returns NA
+rmse_tst <- getRMSE(resp, pred, na.rm = FALSE)
+print(rmse_tst)
+```
+
+
+### 3. `getMAE`: function (<vector of responses>,<vector of predictions>)
+```{r}
+getMAE <- function (response, predicted, ...){
+  mean(abs(response - predicted), ...)
+}
+```
+
+### 4. Test MAE
+#### Test all numeric values
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+mae_tst <- getMAE(resp,pred)
+print(mae_tst)
+
+```
+#### Test NA values present
+```{r}
+rando_index_1 <- sample(length(resp),1)
+rando_index_2 <- sample(length(pred),1)
+resp[rando_index_1] <- NA_real_
+pred[rando_index_2] <- NA_real_
+mae_tst <- getMAE(resp,pred)
+print(mae_tst)
+```
+
+#### Test function calls (na.rm = FALSE, na.rm = TRUE)
+```{r}
+# assert na.rm = TRUE returns a number
+mae_tst <- getMAE(resp, pred, na.rm = TRUE)
+print(mae_tst)
+
+# assert na.rm = FALSE returns NA
+mae_tst <- getMAE(resp, pred, na.rm = FALSE)
+print(mae_tst)
+```
+
+### 5. `snoop` : wrapper function (return either or both of `getRMSE` and `getMAE`)
+```{r}
+snoop <- function(resp,
+                  pred,
+                  metrics = c("rmse","RMSE","getRMSE","mae","MAE","getMAE"), ...){
+  if (!(is.numeric(resp) & 
+        is.vector(resp)  & 
+        is.atomic(resp)  &
+        is.numeric(pred) &
+        is.atomic(pred)  &
+        is.vector(pred))){
+    stop("Prediction and Response should be numeric vectors")
+  }
+  # dotdotdot <- names(list(...))
+  # print(dotdotdot)
+  metrics <- tolower(metrics)
+  result <- list(rmse = NULL, mae = NULL)
+  
+  if(is.null(metrics)){
+    result$rmse <- getRMSE(resp, pred, ...)
+    result$mae  <- getMAE(resp, pred, ...)
+  }
+  else {
+    if("rmse" %in% metrics | "getrmse" %in% metrics){
+      result$rmse <- getRMSE(resp, pred, ...)
+    }
+    if("mae" %in% metrics | "getmae" %in% metrics){
+      result$mae <- getMAE(resp,pred, ...)
+    }
+    return(result)
+  }
+}
+```
+
+#### Test all numeric values
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+
+rmse_tst <- snoop(resp, pred, "rmse")
+mae_tst <- snoop(resp, pred, "MAE")
+both_tst <- snoop(resp, pred)
+```
+
+#### Test NA values present
+```{r}
+rando_index_1 <- sample(length(resp),1)
+rando_index_2 <- sample(length(pred),1)
+resp[rando_index_1] <- NA_real_
+pred[rando_index_2] <- NA_real_
+
+rmse_na_tst <- snoop(resp, pred, "rmse", na.rm = TRUE)
+mae_na_tst <- snoop(resp, pred, "MAE", na.rm = TRUE)
+both_na_tst <- snoop(resp, pred,na.rm = TRUE)
+```
+
+#### Test function calls (default: rmse = TRUE, mae = TRUE)
+```{r}
+# df <- data.frame(col1 = 0.1, col2 = 0.2)
+# df_tst <- snoop(resp, df)
+# df_tst <- snoop(df, pred, "rmse")
+```
+
+
+## Task 3 - Query an API and Tidy-Style Function
+
+### 1. Return info about a topic
+### 2. Parse returned info, grab articles element
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(httr)
+library(jsonlite)
+library(usethis)
+```
+
+```{r}
+#store key
+# usethis::edit_r_environ()
+readRenviron("~/.Renviron")
+news_api_key <- Sys.getenv("NEWS_API_KEY")
+
+query <- URLencode("FEMA+Militia+Chimney Rock")
+from_date <- "2024-10-01"
+to_date <- "2024-10-15"
+url <- paste0("https://newsapi.org/v2/everything?q=", query,
+              "&from=", from_date,
+              "&to=", to_date,
+              "&sortBy=popularity&apiKey=", news_api_key)
+
+# print(url)
+news_info <-GET(url) |>
+  content("text") |>
+  fromJSON(flatten = TRUE, simplifyDataFrame = TRUE) |>
+  pluck("articles")
+
+news_info <- as.tibble(news_info)
+```
+
+### 3. Write function to call the API
+```{r}
+news_query <- function(subject, start_date, api_key){
+  
+}
+```
+
