@@ -9,9 +9,7 @@ format: html
     - lapply applies a function to each element of a list
     - purrr equivalent function is `map ()`
 2. Suppose we have a list called my_list. Each element of the list is a numeric data frame (all columns
-are numeric). We want use lapply() to run the code cor(numeric_matrix, method = "kendall")
-on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify
-method = "kendall" when calling lapply())
+are numeric). Write code to use lapply() to run the code cor(numeric_matrix, method = "kendall")
 ```{r}
 library(purrr)
 help("matrix")
@@ -21,14 +19,14 @@ lapply_example <- lapply(numeric_matrix, FUN = cor,  method = "kendall")
 
 3. What are two advantages of using purrr functions instead of the BaseR apply family?
     1. automatic handling of data types and type consistency through the map_* functions
-    2. the same inconsistent approach to function arguments and implementations in BaseR. 
-        Conway's Law of Anarchy is the best description. They built a system that matched
-        the communication structure of the organization. 
+    2. addressing the same inconsistent approach to function arguments and implementations in BaseR. 
+      
 4. What is a side-effect function?
-    - A side effect function is a function that represents the underlying data e.g. `print`
+    - A side effect function is a function that represents, but does not alter the underlying data (e.g. `print`)
+    
 5. Why can you name a variable sd in a function and not cause any issues with the sd function?
     - Namespace and scoping. Variables inside of functions are scoped to the local
-      function. This means the variable will only exist during the function runtime. Once the function             returns, the `sd` variable will be deallocated from memory. Since the function `sd` is a different           object in a separately scoped namespace (`stats`) than the variable `sd`, R will only look for a more        global scope if no locally scoped `sd` object does not exist. 
+      function. This means the variable will only exist during the function runtime. Once the function returns, the `sd` variable will be deallocated from memory. Since the function `sd` is a different object in a separately scoped namespace (`stats`) than the variable `sd`, R will only look for a more global scope if no locally scoped `sd` object does not exist. 
       
       
 ## Task 2 - Writing R Functions
@@ -54,32 +52,31 @@ x <- runif(n)
 resp <- 3 + 10 * x + rnorm(n)
 pred <- predict(lm(resp ~ x), data.frame(x))
 rmse_tst <- getRMSE(resp, pred)
-print(rmse_tst)
-
+print(paste0("RMSE + all numeric: ", rmse_tst[1]))
 ```
 
-#### Test NA values present
+#### Test with NA values inserted in data
 ```{r}
 rando_index_1 <- sample(length(resp),1)
 rando_index_2 <- sample(length(pred),1)
 resp[rando_index_1] <- NA_real_
 pred[rando_index_2] <- NA_real_
 rmse_tst <- getRMSE(resp, pred, na.rm = TRUE)
-print(rmse_tst)
+print(paste0("RMSE + na.rm = TRUE: ", rmse_tst[1]))
 ```
 #### Test function calls (na.rm = FALSE, na.rm = TRUE)
 ```{r}
 # assert na.rm = TRUE returns a number
 rmse_tst <- getRMSE(resp, pred, na.rm = TRUE)
-print(rmse_tst)
+print(paste0("RMSE + na.rm = TRUE: ", rmse_tst[1]))
 
 # assert na.rm = FALSE returns NA
 rmse_tst <- getRMSE(resp, pred, na.rm = FALSE)
-print(rmse_tst)
+print(paste0("RMSE + na.rm = FALSE: ", rmse_tst[1]))
 ```
 
 
-### 3. `getMAE`: function (<vector of responses>,<vector of predictions>)
+### 3. `getMAE`: function (vector of responses,vector of predictions)
 ```{r}
 getMAE <- function (response, predicted, ...){
   mean(abs(response - predicted), ...)
@@ -95,28 +92,28 @@ x <- runif(n)
 resp <- 3 + 10 * x + rnorm(n)
 pred <- predict(lm(resp ~ x), data.frame(x))
 mae_tst <- getMAE(resp,pred)
-print(mae_tst)
+print(paste0("MAE + all numeric: ", mae_tst[1]))
 
 ```
-#### Test NA values present
+#### Test with NA values present in the data
 ```{r}
 rando_index_1 <- sample(length(resp),1)
 rando_index_2 <- sample(length(pred),1)
 resp[rando_index_1] <- NA_real_
 pred[rando_index_2] <- NA_real_
 mae_tst <- getMAE(resp,pred)
-print(mae_tst)
+print(paste0("MAE + na.rm = TRUE: ", mae_tst[1]))
 ```
 
 #### Test function calls (na.rm = FALSE, na.rm = TRUE)
 ```{r}
 # assert na.rm = TRUE returns a number
 mae_tst <- getMAE(resp, pred, na.rm = TRUE)
-print(mae_tst)
+print(paste0("MAE + na.rm = TRUE: ", mae_tst[1]))
 
 # assert na.rm = FALSE returns NA
 mae_tst <- getMAE(resp, pred, na.rm = FALSE)
-print(mae_tst)
+print(paste0("MAE + na.rm = FALSE: ", mae_tst[1]))
 ```
 
 ### 5. `snoop` : wrapper function (return either or both of `getRMSE` and `getMAE`)
@@ -130,7 +127,8 @@ snoop <- function(resp,
         is.numeric(pred) &
         is.atomic(pred)  &
         is.vector(pred))){
-    stop("Prediction and Response should be numeric vectors")
+    warning("Prediction and Response should be numeric vectors")
+    
   }
   # dotdotdot <- names(list(...))
   # print(dotdotdot)
@@ -162,11 +160,14 @@ resp <- 3 + 10 * x + rnorm(n)
 pred <- predict(lm(resp ~ x), data.frame(x))
 
 rmse_tst <- snoop(resp, pred, "rmse")
+print(paste0("RMSE (all): ", rmse_tst[1], "  MAE (assert: NULL): ", rmse_tst[2]))
 mae_tst <- snoop(resp, pred, "MAE")
+print(paste0("MAE (assert: NULL): ", mae_tst[1], "  MAE (all): ", mae_tst[2]))
 both_tst <- snoop(resp, pred)
+print(paste0("RMSE (all): ", both_tst[1], "  MAE (all): ", both_tst[2]))
 ```
 
-#### Test NA values present
+#### Test NA values present in data
 ```{r}
 rando_index_1 <- sample(length(resp),1)
 rando_index_2 <- sample(length(pred),1)
@@ -174,28 +175,31 @@ resp[rando_index_1] <- NA_real_
 pred[rando_index_2] <- NA_real_
 
 rmse_na_tst <- snoop(resp, pred, "rmse", na.rm = TRUE)
+print(paste0("RMSE + na.rm = TRUE: ", rmse_na_tst[1]))
 mae_na_tst <- snoop(resp, pred, "MAE", na.rm = TRUE)
+print(paste0("MAE + na.rm = TRUE: ", mae_na_tst[2]))
 both_na_tst <- snoop(resp, pred,na.rm = TRUE)
+print(paste0("RMSE + na.rm = TRUE: ", both_na_tst[1], "  MAE + na.rm = TRUE: ", both_na_tst[2]))
 ```
 
-#### Test function calls (default: rmse = TRUE, mae = TRUE)
+#### Test function calls (incorrect data)
 ```{r}
-# df <- data.frame(col1 = 0.1, col2 = 0.2)
-# df_tst <- snoop(resp, df)
-# df_tst <- snoop(df, pred, "rmse")
+df <- data.frame(col1 = 0.1, col2 = 0.2)
+df_tst <- snoop(resp, df)
+df_tst <- snoop(df, pred, "rmse")
 ```
-
 
 ## Task 3 - Query an API and Tidy-Style Function
 
 ### 1. Return info about a topic
 ### 2. Parse returned info, grab articles element
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 library(tidyverse)
 library(httr)
 library(jsonlite)
 library(usethis)
+library(lubridate)
 ```
 
 ```{r}
@@ -206,25 +210,78 @@ news_api_key <- Sys.getenv("NEWS_API_KEY")
 
 query <- URLencode("FEMA+Militia+Chimney Rock")
 from_date <- "2024-10-01"
-to_date <- "2024-10-15"
+to_date <- format(Sys.Date(), "%Y-%m-%d")
 url <- paste0("https://newsapi.org/v2/everything?q=", query,
               "&from=", from_date,
               "&to=", to_date,
               "&sortBy=popularity&apiKey=", news_api_key)
 
-# print(url)
 news_info <-GET(url) |>
   content("text") |>
   fromJSON(flatten = TRUE, simplifyDataFrame = TRUE) |>
   pluck("articles")
 
-news_info <- as.tibble(news_info)
 ```
 
 ### 3. Write function to call the API
 ```{r}
 news_query <- function(subject, start_date, api_key){
+  query <- URLencode(subject)
+  start_date <- start_date
+  end_date <- format(Sys.Date(), "%Y-%m-%d")
+  api_key <- api_key
   
+  url <- paste0("https://newsapi.org/v2/everything?q=", query,
+                "&from=", start_date,
+                "&to=", end_date,
+                "&sortBy=popularity&apiKey=", api_key)
+
+  news_info <-GET(url) |>
+  content("text") |>
+  fromJSON(flatten = TRUE, simplifyDataFrame = TRUE) |>
+  pluck("articles")
+
+  return(news_info)
 }
+
+why_we_cant_have_nice_things <- news_query("FEMA+Militia+Chimney Rock", "2024-09-23", "f01ded9eed0b4378b34210f03df9026f")
+geology_geneaology_genesis <- news_query("Craigtown", "2024-09-23", "f01ded9eed0b4378b34210f03df9026f")
 ```
 
+### 4. Summarize Name of Source
+```{r}
+# Summarize name of the source as a 1-way contingency table
+table(why_we_cant_have_nice_things$source.name)
+```
+
+### 5. Turn `publishedAt` into Date Column, sort by, and create `pub_diff` (typeof:difftype) which is lagged by `publishedAt`
+```{r}
+
+why_we_cant_have_nice_things <- why_we_cant_have_nice_things |>
+  mutate(publishedAt = ymd_hms(publishedAt, tz="UTC")) |>
+  arrange(publishedAt) |>
+  mutate(pub_diff = publishedAt - lag(publishedAt))
+  
+
+geology_geneaology_genesis <- geology_geneaology_genesis |>
+  mutate(publishedAt = ymd_hms(publishedAt, tz="UTC")) |>
+  arrange(publishedAt) |>
+  mutate(pub_diff = publishedAt - lag(publishedAt))
+```
+
+### 6. Subset to return the date version of `publishedAt`and `pub_diff`. 
+######  &#8212; Map to return mean, std dev, and median
+######  &#8212; Use an anonymous function with shorthand syntax
+######  &#8212; Set na.rm = TRUE in calls for stats
+
+```{r}
+ggg <- geology_geneaology_genesis |>
+        select(publishedAt, pub_diff) |>
+        mutate(publishedAt = as.Date(publishedAt)) |>
+        map(\(x) list(mean = mean(as.numeric(x), na.rm = TRUE),
+                      sd = sd(x, na.rm = TRUE),
+                      median = median(x, na.rm = TRUE)))
+print(ggg)
+```
+
+        
