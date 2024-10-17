@@ -245,7 +245,9 @@ news_query <- function(subject, start_date, api_key){
 }
 
 why_we_cant_have_nice_things <- news_query("FEMA+Militia+Chimney Rock", "2024-09-23", "f01ded9eed0b4378b34210f03df9026f")
+print(why_we_cant_have_nice_things$title)
 geology_geneaology_genesis <- news_query("Craigtown", "2024-09-23", "f01ded9eed0b4378b34210f03df9026f")
+print(geology_geneaology_genesis$title)
 ```
 
 ### 4. Summarize Name of Source
@@ -256,17 +258,21 @@ table(why_we_cant_have_nice_things$source.name)
 
 ### 5. Turn `publishedAt` into Date Column, sort by, and create `pub_diff` (typeof:difftype) which is lagged by `publishedAt`
 ```{r}
-
+print(typeof(why_we_cant_have_nice_things$publishedAt))
 why_we_cant_have_nice_things <- why_we_cant_have_nice_things |>
   mutate(publishedAt = ymd_hms(publishedAt, tz="UTC")) |>
   arrange(publishedAt) |>
   mutate(pub_diff = publishedAt - lag(publishedAt))
-  
+print(typeof(why_we_cant_have_nice_things$publishedAt))
+print(head(why_we_cant_have_nice_things$publishedAt))
 
+print(typeof(geology_geneaology_genesis$publishedAt))
 geology_geneaology_genesis <- geology_geneaology_genesis |>
   mutate(publishedAt = ymd_hms(publishedAt, tz="UTC")) |>
   arrange(publishedAt) |>
   mutate(pub_diff = publishedAt - lag(publishedAt))
+print(typeof(geology_geneaology_genesis$publishedAt))
+print(head(geology_geneaology_genesis$publishedAt))
 ```
 
 ### 6. Subset to return the date version of `publishedAt`and `pub_diff`. 

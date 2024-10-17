@@ -456,14 +456,55 @@ or logical: returning NA</code></pre>
 <span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>why_we_cant_have_nice_things <span class="ot">&lt;-</span> <span class="fu">news_query</span>(<span class="st">"FEMA+Militia+Chimney Rock"</span>, <span class="st">"2024-09-23"</span>, <span class="st">"f01ded9eed0b4378b34210f03df9026f"</span>)</span>
-<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>geology_geneaology_genesis <span class="ot">&lt;-</span> <span class="fu">news_query</span>(<span class="st">"Craigtown"</span>, <span class="st">"2024-09-23"</span>, <span class="st">"f01ded9eed0b4378b34210f03df9026f"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(why_we_cant_have_nice_things<span class="sc">$</span>title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "US emergency responders, forecasters facing threats in wake of hurricanes"                                                             
+ [2] "North Carolina man arrested for FEMA threats shared militia propaganda, dubbed self ‘harmful violent extremist’ on Facebook"           
+ [3] "'Armed militia' threatened FEMA recovery workers in North Carolina"                                                                    
+ [4] "Hurricane recovery disrupted by threats to relief workers"                                                                             
+ [5] "How Many Domestic Terrorists Does It Take To Stop FEMA In North Carolina?"                                                             
+ [6] "Armed North Carolina Man Forces FEMA to Halt Life-Saving Hurricane Relief After Threatening Workers With 'Truck Loads Full of Militia'"
+ [7] "[Removed]"                                                                                                                             
+ [8] "GOP Despair"                                                                                                                           
+ [9] "FEMA Paused Hurricane Relief Work Over Warning of ‘Armed Militia’ Out ‘Hunting FEMA’"                                                  
+[10] "North Carolina: “Armed Militia” Threatens Federal Emergency Workers"                                                                   
+[11] "Another Nutcase With a Gun Tried To Show Up To A Trump Rally, This Time In Coachella Valley"                                           
+[12] "FEMA Workers Change Response Tactics in North Carolina After Threats"                                                                  
+[13] "Armed Militia 'Hunting FEMA' Causes Hurricane Responders to Evacuate—Report"                                                           
+[14] "Who is William Parsons? Armed Man Accused of Threatening FEMA Workers"                                                                 
+[15] "FEMA Restarts Door-to-Door Visits in North Carolina After Recent Threats"                                                              
+[16] "Armed North Carolina man arrested for making threats against FEMA workers helping with hurricane recovery efforts"                     
+[17] "Armed North Carolina man arrested on suspicion of making threats against FEMA workers, authorities say"                                
+[18] "FEMA resumes door-to-door visits in North Carolina after threats tied to disinformation"                                               
+[19] "FEMA workers change some hurricane-recovery efforts in North Carolina after receiving threats"                                         
+[20] "Armed Man Arrested After Alleged Threats To FEMA Workers Helping Hurricane Relief"                                                     
+[21] "[Removed]"                                                                                                                             
+[22] "FEMA adjusts hurricane-recovery efforts in North Carolina after workers threatened"                                                    
+[23] "FEMA workers change some hurricane-recovery efforts in North Carolina after receiving threats"                                         
+[24] "FEMA resumes door-to-door visits in North Carolina after threats tied to disinformation"                                               
+[25] "U.S. to Provide $157 Million in Humanitarian Aid to People Affected by 'Crisis in Lebanon'"                                            
+[26] "North Carolina man accused of threatening FEMA workers with assault rifle amid Hurricane Helene clean-up"                              
+[27] "NC man with rifle, handgun accused of threatening FEMA workers"                                                                        
+[28] "FEMA workers change some hurricane-recovery efforts in North Carolina after receiving threats"                                         </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>geology_geneaology_genesis <span class="ot">&lt;-</span> <span class="fu">news_query</span>(<span class="st">"Craigtown"</span>, <span class="st">"2024-09-23"</span>, <span class="st">"f01ded9eed0b4378b34210f03df9026f"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(geology_geneaology_genesis<span class="sc">$</span>title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "11 Family Members Tragically Killed by Hurricane Helene"                                                
+[2] "11 members of North Carolina family killed in Hurricane Helene mudslides: ‘This will never be the same’"
+[3] "Ouragan Hélène aux États-Unis: 11 membres d'une même famille tués dans les intempéries"                 
+[4] "Miasto niemal przestało istnieć. Stracił 11 członków rodziny"                                           
+[5] "Ouragan Hélène&nbsp;: Une coulée de boue tue 11 membres d’une même famille en Caroline du Nord"              
+[6] "The Craig family in North Carolina lost 11 relatives in Helene’s flooding"                              
+[7] "Hurricane Helene: North Carolina family loses 11 as bodies continue to be found"                        </code></pre>
+</div>
 </div>
 </section>
 <section id="summarize-name-of-source" class="level3">
 <h3 class="anchored" data-anchor-id="summarize-name-of-source">4. Summarize Name of Source</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize name of the source as a 1-way contingency table</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(why_we_cant_have_nice_things<span class="sc">$</span>source.name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize name of the source as a 1-way contingency table</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(why_we_cant_have_nice_things<span class="sc">$</span>source.name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
                    [Removed]                     ABC News 
@@ -496,16 +537,42 @@ International Business Times                     Mediaite
 <section id="turn-publishedat-into-date-column-sort-by-and-create-pub_diff-typeofdifftype-which-is-lagged-by-publishedat" class="level3">
 <h3 class="anchored" data-anchor-id="turn-publishedat-into-date-column-sort-by-and-create-pub_diff-typeofdifftype-which-is-lagged-by-publishedat">5. Turn <code>publishedAt</code> into Date Column, sort by, and create <code>pub_diff</code> (typeof:difftype) which is lagged by <code>publishedAt</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>why_we_cant_have_nice_things <span class="ot">&lt;-</span> why_we_cant_have_nice_things <span class="sc">|&gt;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">ymd_hms</span>(publishedAt, <span class="at">tz=</span><span class="st">"UTC"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(publishedAt) <span class="sc">|&gt;</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pub_diff =</span> publishedAt <span class="sc">-</span> <span class="fu">lag</span>(publishedAt))</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>geology_geneaology_genesis <span class="ot">&lt;-</span> geology_geneaology_genesis <span class="sc">|&gt;</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">ymd_hms</span>(publishedAt, <span class="at">tz=</span><span class="st">"UTC"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(publishedAt) <span class="sc">|&gt;</span></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pub_diff =</span> publishedAt <span class="sc">-</span> <span class="fu">lag</span>(publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">typeof</span>(why_we_cant_have_nice_things<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>why_we_cant_have_nice_things <span class="ot">&lt;-</span> why_we_cant_have_nice_things <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">ymd_hms</span>(publishedAt, <span class="at">tz=</span><span class="st">"UTC"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(publishedAt) <span class="sc">|&gt;</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pub_diff =</span> publishedAt <span class="sc">-</span> <span class="fu">lag</span>(publishedAt))</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">typeof</span>(why_we_cant_have_nice_things<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(why_we_cant_have_nice_things<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2024-10-05 03:21:16 UTC" "2024-10-14 05:10:00 UTC"
+[3] "2024-10-14 08:40:16 UTC" "2024-10-14 17:05:26 UTC"
+[5] "2024-10-14 17:25:00 UTC" "2024-10-14 17:52:41 UTC"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">typeof</span>(geology_geneaology_genesis<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>geology_geneaology_genesis <span class="ot">&lt;-</span> geology_geneaology_genesis <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">ymd_hms</span>(publishedAt, <span class="at">tz=</span><span class="st">"UTC"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(publishedAt) <span class="sc">|&gt;</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pub_diff =</span> publishedAt <span class="sc">-</span> <span class="fu">lag</span>(publishedAt))</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">typeof</span>(geology_geneaology_genesis<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(geology_geneaology_genesis<span class="sc">$</span>publishedAt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2024-10-10 08:00:13 UTC" "2024-10-10 11:40:57 UTC"
+[3] "2024-10-11 18:51:25 UTC" "2024-10-11 20:41:15 UTC"
+[5] "2024-10-12 06:51:48 UTC" "2024-10-12 13:10:43 UTC"</code></pre>
+</div>
 </div>
 </section>
 <section id="subset-to-return-the-date-version-of-publishedatand-pub_diff." class="level3">
@@ -519,13 +586,13 @@ International Business Times                     Mediaite
 <section id="set-na.rm-true-in-calls-for-stats" class="level6">
 <h6 class="anchored" data-anchor-id="set-na.rm-true-in-calls-for-stats">— Set na.rm = TRUE in calls for stats</h6>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ggg <span class="ot">&lt;-</span> geology_geneaology_genesis <span class="sc">|&gt;</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(publishedAt, pub_diff) <span class="sc">|&gt;</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">as.Date</span>(publishedAt)) <span class="sc">|&gt;</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map</span>(\(x) <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(<span class="fu">as.numeric</span>(x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">median =</span> <span class="fu">median</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ggg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>ggg <span class="ot">&lt;-</span> geology_geneaology_genesis <span class="sc">|&gt;</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(publishedAt, pub_diff) <span class="sc">|&gt;</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">publishedAt =</span> <span class="fu">as.Date</span>(publishedAt)) <span class="sc">|&gt;</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map</span>(\(x) <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(<span class="fu">as.numeric</span>(x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">median =</span> <span class="fu">median</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ggg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$publishedAt
 $publishedAt$mean
